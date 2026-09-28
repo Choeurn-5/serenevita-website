@@ -1,0 +1,7 @@
+{
+  "name": "Serene Vita Retreat",
+  "description": "Luxury eco-wellness retreat in Kep, Cambodia featuring luxury suites, ocean-view rooftop pool, Khmer-French artisan dining, and holistic spa rituals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
