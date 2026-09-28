@@ -11,7 +11,7 @@ export const WellnessView: React.FC<WellnessViewProps> = ({ data, onOpenBooking 
   return (
     <div className="space-y-24 pb-24">
       {/* Hero Header */}
-      <section className="relative py-28 text-center px-4 overflow-hidden bg-[#24211d] text-white">
+      <section className="relative pt-36 sm:pt-44 pb-24 sm:pb-28 text-center px-4 overflow-hidden bg-[#24211d] text-white">
         <div className="absolute inset-0 z-0 opacity-40">
           <img
             src={data.wellnessHeroImageUrl}

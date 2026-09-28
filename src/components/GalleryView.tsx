@@ -12,7 +12,7 @@ export const GalleryView: React.FC<GalleryViewProps> = ({ data }) => {
   return (
     <div className="space-y-20 pb-24">
       {/* Hero Header */}
-      <section className="relative py-28 text-center px-4 overflow-hidden bg-[#24211d] text-white">
+      <section className="relative pt-36 sm:pt-44 pb-24 sm:pb-28 text-center px-4 overflow-hidden bg-[#24211d] text-white">
         <div className="relative z-10 max-w-3xl mx-auto space-y-4">
           <span className="text-xs uppercase tracking-[0.3em] text-[#d4af82] font-semibold">
             {data.galleryHeroTagline}

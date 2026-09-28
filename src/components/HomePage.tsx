@@ -26,7 +26,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   return (
     <div className="space-y-24 pb-20">
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center text-center px-4 overflow-hidden">
+      <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center text-center px-4 overflow-hidden">
         {/* Ambient Video Background with fallback image & dark luxury gradient */}
         <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
           {/* Fallback image shown while video loads or on low-power devices */}
@@ -49,7 +49,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto px-4 py-20 text-[#faf7f2]">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 pt-36 sm:pt-48 pb-20 sm:pb-28 text-[#faf7f2]">
           <span className="inline-block text-xs uppercase tracking-[0.35em] text-[#e3bf96] mb-4 font-medium px-4 py-1.5 rounded-full bg-black/25 backdrop-blur-sm border border-white/10">
             {data.heroTagline}
           </span>
