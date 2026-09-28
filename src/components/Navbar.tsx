@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { SiteSettings } from '../types';
+import { DIRECT_BOOKING_URL } from '../api';
 import { Menu, X, Phone, Send, Calendar, MapPin } from 'lucide-react';
 
 interface NavbarProps {
@@ -115,23 +116,27 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action button */}
         <div className="hidden sm:flex items-center gap-4">
-          <button
-            onClick={onOpenBooking}
+          <a
+            href={DIRECT_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2 px-5 py-2.5 bg-[#886944] hover:bg-[#745736] text-[#faf7f2] text-xs uppercase tracking-widest font-medium rounded transition shadow-sm"
           >
             <Calendar className="w-3.5 h-3.5" />
             Book Your Stay
-          </button>
+          </a>
         </div>
 
         {/* Mobile menu trigger */}
         <div className="lg:hidden flex items-center gap-3">
-          <button
-            onClick={onOpenBooking}
-            className="px-3.5 py-1.5 bg-[#886944] text-[#faf7f2] text-xs uppercase tracking-wider font-medium rounded"
+          <a
+            href={DIRECT_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3.5 py-1.5 bg-[#886944] hover:bg-[#745736] text-[#faf7f2] text-xs uppercase tracking-wider font-medium rounded"
           >
             Book
-          </button>
+          </a>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-[#4a453e] hover:text-[#24211d] focus:outline-none"

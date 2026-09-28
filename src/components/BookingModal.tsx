@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { RoomItem, SiteSettings } from '../types';
-import { X, Calendar, Phone, Send, CheckCircle2, User, Mail, Sparkles } from 'lucide-react';
+import { DIRECT_BOOKING_URL } from '../api';
+import { X, Calendar, Phone, Send, CheckCircle2, User, Mail, Sparkles, ExternalLink } from 'lucide-react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -212,17 +213,29 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 Submit Booking Request
               </button>
 
-              <div className="text-center">
+              <div className="text-center space-y-2 pt-1">
                 <span className="text-[11px] text-[#8c8477]">or instant booking via</span>
-                <a
-                  href={telegramBookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 flex items-center justify-center gap-1.5 text-xs text-[#2272a8] hover:underline font-medium"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  Chat Directly with Concierge on Telegram
-                </a>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <a
+                    href={DIRECT_BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs text-[#886944] hover:text-[#5e482f] font-medium"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    Inn-Connect Booking Engine
+                  </a>
+                  <span className="hidden sm:inline text-[#d0c8bb]">&bull;</span>
+                  <a
+                    href={telegramBookingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-xs text-[#2272a8] hover:underline font-medium"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                    Telegram Concierge
+                  </a>
+                </div>
               </div>
             </div>
           </form>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { HomePageData, RoomItem } from '../types';
+import { DIRECT_BOOKING_URL } from '../api';
 import { Star, ArrowRight, ShieldCheck, Wind, Coffee, Sparkles, Droplets } from 'lucide-react';
 
 interface HomePageProps {
@@ -55,12 +56,14 @@ export const HomePage: React.FC<HomePageProps> = ({
             >
               {data.heroCtaText}
             </button>
-            <button
-              onClick={onOpenBooking}
-              className="w-full sm:w-auto px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs uppercase tracking-widest font-medium rounded backdrop-blur-md border border-white/30 transition cursor-pointer"
+            <a
+              href={DIRECT_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 py-3.5 bg-white/10 hover:bg-white/20 text-white text-xs uppercase tracking-widest font-medium rounded backdrop-blur-md border border-white/30 transition cursor-pointer text-center"
             >
               Reserve a Villa
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -218,9 +221,15 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </div>
 
                 <div className="pt-4 border-t border-[#ebe4d7] flex items-center justify-between text-xs text-[#787164]">
-                  <span>{room.fields.roomSize}</span>
-                  <span>{room.fields.roomBedType}</span>
-                  <span>Up to {room.fields.roomMaxGuests} Guests</span>
+                  <span>{room.fields.roomSize} &bull; {room.fields.roomBedType}</span>
+                  <a
+                    href={DIRECT_BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#886944] hover:text-[#5e482f] font-semibold uppercase tracking-wider text-[11px] inline-flex items-center gap-1"
+                  >
+                    Book Now &rarr;
+                  </a>
                 </div>
               </div>
             </div>

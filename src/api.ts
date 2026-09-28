@@ -10,6 +10,7 @@ import {
 } from './types';
 
 export const WP_GRAPHQL_ENDPOINT = 'https://cms.serenevita.asia/graphql';
+export const DIRECT_BOOKING_URL = 'https://app.inn-connect.com/book/properties/Serene%20Vita%20Retreat';
 
 async function fetchGraphQL<T>(query: string, variables: Record<string, any> = {}): Promise<T | null> {
   try {

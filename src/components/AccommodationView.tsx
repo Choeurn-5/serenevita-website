@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { AccommodationPageData, RoomItem } from '../types';
+import { DIRECT_BOOKING_URL } from '../api';
 import { Users, Maximize, Bed, CheckCircle2, ChevronRight, X, Sparkles } from 'lucide-react';
 
 interface AccommodationViewProps {
@@ -144,12 +145,14 @@ export const AccommodationView: React.FC<AccommodationViewProps> = ({
                   >
                     View Gallery & Details
                   </button>
-                  <button
-                    onClick={() => onOpenBookingForRoom(room.title)}
-                    className="px-6 py-2.5 bg-[#886944] hover:bg-[#745736] text-white text-xs uppercase tracking-widest font-medium rounded transition shadow-sm"
+                  <a
+                    href={DIRECT_BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-6 py-2.5 bg-[#886944] hover:bg-[#745736] text-white text-xs uppercase tracking-widest font-medium rounded transition shadow-sm"
                   >
                     Book Suite
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -224,16 +227,14 @@ export const AccommodationView: React.FC<AccommodationViewProps> = ({
                   <span className="text-xs font-sans text-[#7e7669]">/ night</span>
                 </p>
               </div>
-              <button
-                onClick={() => {
-                  const title = selectedRoom.title;
-                  setSelectedRoom(null);
-                  onOpenBookingForRoom(title);
-                }}
-                className="px-8 py-3 bg-[#886944] hover:bg-[#745736] text-white text-xs uppercase tracking-widest font-medium rounded transition"
+              <a
+                href={DIRECT_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-8 py-3 bg-[#886944] hover:bg-[#745736] text-white text-xs uppercase tracking-widest font-medium rounded transition"
               >
-                Proceed to Reserve
-              </button>
+                Book Suite Online
+              </a>
             </div>
           </div>
         </div>
