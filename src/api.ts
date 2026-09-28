@@ -103,15 +103,43 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   };
 }
 
+function cleanHtml(html?: string | null): string {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&#038;/g, '&')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#8217;/g, "'")
+    .replace(/&#8220;/g, '"')
+    .replace(/&#8221;/g, '"')
+    .replace(/\[&hellip;\]/g, '...')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractImagesFromHtml(html?: string | null): string[] {
+  if (!html) return [];
+  const matches = html.matchAll(/<img[^>]+src=["']([^"']+)["']/gi);
+  const urls: string[] = [];
+  for (const m of matches) {
+    if (m[1]) urls.push(m[1]);
+  }
+  return urls;
+}
+
 export async function getRooms(): Promise<RoomItem[]> {
   const query = `
     query GetRooms {
-      rooms(first: 20) {
+      rooms(first: 100, where: { orderby: { field: DATE, order: ASC } }) {
         nodes {
           id
           databaseId
           title
           slug
+          content
+          excerpt
           featuredImage {
             node {
               sourceUrl
@@ -162,13 +190,47 @@ export async function getRooms(): Promise<RoomItem[]> {
       if (details.roomImage3?.node?.sourceUrl) gallery.push(details.roomImage3.node.sourceUrl);
       if (details.roomImage4?.node?.sourceUrl) gallery.push(details.roomImage4.node.sourceUrl);
 
-      // Determine main image: featuredImage -> roomImage1 -> roomImage2 -> gallery -> fallback
+      // Also include any images embedded in post content
+      const embeddedImages = extractImagesFromHtml(n.content);
+      embeddedImages.forEach((img) => {
+        if (!gallery.includes(img)) gallery.push(img);
+      });
+
+      // If WordPress image is not yet assigned, use a luxury hillside room placeholder
+      const defaultMediaImage = n.slug?.includes('mount')
+        ? 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80'
+        : 'https://cms.serenevita.asia/wp-content/uploads/2026/01/Pool-interior-05.webp';
+
+      // Determine main image: featuredImage -> roomImage1 -> roomImage2 -> gallery -> WordPress upload -> fallback
       const primaryImage =
         n.featuredImage?.node?.sourceUrl ||
         details.roomImage1?.node?.sourceUrl ||
         details.roomImage2?.node?.sourceUrl ||
         gallery[0] ||
+        defaultMediaImage ||
         FALLBACK_ASSETS.gallery[idx % FALLBACK_ASSETS.gallery.length];
+
+      // If gallery is empty, populate with primaryImage
+      if (gallery.length === 0 && primaryImage) {
+        gallery.push(primaryImage);
+      }
+
+      // Check if roomDescription is unique, or fallback to clean post content
+      const cleanContent = cleanHtml(n.content);
+      const isDefaultTemplateDesc =
+        !details.roomDescription ||
+        details.roomDescription.includes('A sanctuary of restorative calm featuring panoramic views');
+
+      const roomDescriptionFinal =
+        !isDefaultTemplateDesc && details.roomDescription
+          ? details.roomDescription
+          : cleanContent || details.roomDescription || 'A sanctuary of restorative calm in Kep.';
+
+      // Normalize line breaks in room amenities
+      const normalizedAmenities = (details.roomAmenities || '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        .trim();
 
       return {
         id: n.id || String(n.databaseId || idx),
@@ -177,15 +239,13 @@ export async function getRooms(): Promise<RoomItem[]> {
         slug: n.slug,
         featuredImageUrl: primaryImage,
         fields: {
-          roomPricePerNight: details.pricePerNight ?? 95,
+          roomPricePerNight: Number(details.pricePerNight) || 95,
           roomSize: details.roomSize || '45 m²',
           roomBedType: details.bedType || '1 King Bed',
-          roomMaxGuests: details.maxGuests ?? 2,
-          roomDescriptionShort:
-            details.roomDescription ||
-            'A sanctuary of restorative calm featuring panoramic views, artisan wooden finishes, an expansive private terrace, and an outdoor soaking tub.',
+          roomMaxGuests: Number(details.maxGuests) || 2,
+          roomDescriptionShort: roomDescriptionFinal,
           roomFeatures:
-            details.roomAmenities ||
+            normalizedAmenities ||
             'Private Balcony with Sea & Hill View\nEco Rain Shower & Freestanding Tub\nArtisan Tea & Espresso Machine\nHigh-Speed Wi-Fi\nOrganic Botanical Toiletries\nTurndown Aromatherapy Service',
           roomGalleryPhotos: gallery.length > 0 ? gallery : [primaryImage],
         },
