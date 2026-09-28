@@ -38,28 +38,50 @@ async function fetchGraphQL<T>(query: string, variables: Record<string, any> = {
   }
 }
 
-// Fallback high-res luxury photography if images are empty in WP Media Library
+// Local fallback images organized by page (served from /public/images/)
 export const FALLBACK_ASSETS = {
-  hero: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2000&q=85',
-  retreatPool: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1600&q=85',
-  about: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1400&q=85',
-  aboutSecondary: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1400&q=85',
-  wellness: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1400&q=85',
-  yoga: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=85',
-  dining: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1400&q=85',
-  diningFood: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1400&q=85',
-  crabMarket: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=1400&q=85',
-  pepperFarm: 'https://images.unsplash.com/photo-1509358271058-acd22cc93898?auto=format&fit=crop&w=1400&q=85',
-  jungleTrek: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1400&q=85',
-  rabbitIsland: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1400&q=85',
+  // Home Page: /public/images/home/
+  hero: '/images/home/hero.jpg',
+  about: '/images/home/about-1.jpg',
+  aboutSecondary: '/images/home/about-2.jpg',
+  wellnessTeaser: '/images/home/wellness-teaser.jpg',
+  diningTeaser: '/images/home/dining-teaser.jpg',
+
+  // Accommodation Page: /public/images/accommodation/
+  retreatPool: '/images/accommodation/hero.jpg',
+  accomHero: '/images/accommodation/hero.jpg',
+
+  // Wellness & Spa Page: /public/images/wellness/
+  wellness: '/images/wellness/hero.jpg',
+  wellnessHero: '/images/wellness/hero.jpg',
+  yoga: '/images/wellness/yoga.jpg',
+
+  // Dining Page: /public/images/dining/
+  dining: '/images/dining/hero.jpg',
+  diningFood: '/images/dining/concept.jpg',
+
+  // Activities Page: /public/images/activities/
+  activityHero: '/images/activities/hero.jpg',
+  crabMarket: '/images/activities/crab-market.jpg',
+  pepperFarm: '/images/activities/pepper-farm.jpg',
+  jungleTrek: '/images/activities/jungle-trek.jpg',
+  rabbitIsland: '/images/activities/rabbit-island.jpg',
+
+  // Gallery Page: /public/images/gallery/
   gallery: [
-    'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80',
-    'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
+    '/images/gallery/gallery-1.jpg',
+    '/images/gallery/gallery-2.jpg',
+    '/images/gallery/gallery-3.jpg',
+    '/images/gallery/gallery-4.jpg',
+    '/images/gallery/gallery-5.jpg',
+    '/images/gallery/gallery-6.jpg',
   ],
+
+  // Contact Page: /public/images/contact/
+  contactHero: '/images/contact/hero.jpg',
+
+  // Common: /public/images/common/
+  logo: '/images/common/logo.webp',
 };
 
 export async function getSiteSettings(): Promise<SiteSettings> {
@@ -196,10 +218,8 @@ export async function getRooms(): Promise<RoomItem[]> {
         if (!gallery.includes(img)) gallery.push(img);
       });
 
-      // If WordPress image is not yet assigned, use a luxury hillside room placeholder
-      const defaultMediaImage = n.slug?.includes('mount')
-        ? 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80'
-        : 'https://cms.serenevita.asia/wp-content/uploads/2026/01/Pool-interior-05.webp';
+      // If WordPress image is not yet assigned, use local accommodation fallback
+      const defaultMediaImage = '/images/accommodation/hero.jpg';
 
       // Determine main image: featuredImage -> roomImage1 -> roomImage2 -> gallery -> WordPress upload -> fallback
       const primaryImage =
@@ -258,7 +278,7 @@ export async function getRooms(): Promise<RoomItem[]> {
     {
       id: 'room-1',
       title: 'Deluxe Hillside Sanctuary Suite',
-      featuredImageUrl: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=1200&q=80',
+      featuredImageUrl: '/images/accommodation/hero.jpg',
       fields: {
         roomPricePerNight: 120,
         roomSize: '45 m²',
@@ -271,7 +291,7 @@ export async function getRooms(): Promise<RoomItem[]> {
     {
       id: 'room-2',
       title: 'Panoramic Ocean View Villa',
-      featuredImageUrl: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80',
+      featuredImageUrl: '/images/home/about-1.jpg',
       fields: {
         roomPricePerNight: 185,
         roomSize: '65 m²',
@@ -284,7 +304,7 @@ export async function getRooms(): Promise<RoomItem[]> {
     {
       id: 'room-3',
       title: 'Serene Private Pool Residence',
-      featuredImageUrl: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1200&q=80',
+      featuredImageUrl: '/images/home/hero.jpg',
       fields: {
         roomPricePerNight: 275,
         roomSize: '110 m²',
