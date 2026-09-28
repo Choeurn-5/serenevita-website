@@ -27,14 +27,25 @@ export const HomePage: React.FC<HomePageProps> = ({
     <div className="space-y-24 pb-20">
       {/* 1. HERO SECTION */}
       <section className="relative min-h-[85vh] flex items-center justify-center text-center px-4 overflow-hidden">
-        {/* Background Image with warm dark gradient overlay */}
-        <div className="absolute inset-0 z-0">
+        {/* Ambient Video Background with fallback image & dark luxury gradient */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {/* Fallback image shown while video loads or on low-power devices */}
           <img
             src={data.heroImageUrl}
             alt="Serene Vita Retreat Kep"
-            className="w-full h-full object-cover object-center transform scale-105 transition-transform duration-1000"
+            className="w-full h-full object-cover object-center scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#181613]/55 via-[#181613]/40 to-[#181613]/70" />
+          {/* Looping Ambient YouTube Video */}
+          <iframe
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-[177.78vh] h-[56.25vw] pointer-events-none scale-130 transition-opacity duration-1000"
+            src="https://www.youtube-nocookie.com/embed/7DX7KlCHO2s?autoplay=1&mute=1&loop=1&playlist=7DX7KlCHO2s&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&iv_load_policy=3&disablekb=1"
+            title="Serene Vita Retreat Ambient Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            tabIndex={-1}
+            aria-hidden="true"
+          />
+          {/* Warm cinematic gradient overlays for high-contrast luxury aesthetic and readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#181613]/65 via-[#181613]/40 to-[#181613]/75" />
         </div>
 
         {/* Hero Content */}
